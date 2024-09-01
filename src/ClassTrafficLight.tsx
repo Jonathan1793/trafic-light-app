@@ -1,40 +1,28 @@
 import { Component } from "react";
 
-type Colors = {
-  redColor: string;
-  yellowColor: string;
-  greenColor: string;
+/*can you please go a little into the types I used here 
+and the functional component too please. I'm just getting into typescript and I don't know
+if I used them correctly or if they are even necessary where I used them. thank you!
+
+*/
+type ColorsIndex = {
+  colorIndex: number;
 };
 
-export class ClassTrafficLight extends Component<object, Colors> {
-  state: Colors = {
-    redColor: "black",
-    yellowColor: "black",
-    greenColor: "green",
+const colors: string[] = ["red", "yellow", "green"];
+
+export class ClassTrafficLight extends Component<object, ColorsIndex> {
+  state: ColorsIndex = {
+    colorIndex: 0,
   };
 
   changeColor = () => {
-    if (this.state.greenColor != "black") {
-      this.setState({
-        redColor: "black",
-        yellowColor: "yellow",
-        greenColor: "black",
-      });
-    }
-    if (this.state.redColor != "black") {
-      this.setState({
-        redColor: "black",
-        yellowColor: "black",
-        greenColor: "green",
-      });
-    }
-    if (this.state.yellowColor != "black") {
-      this.setState({
-        redColor: "red",
-        yellowColor: "black",
-        greenColor: "black",
-      });
-    }
+    const nextStateColor: number =
+      this.state.colorIndex === 0
+        ? colors.length - 1
+        : this.state.colorIndex - 1;
+
+    this.setState({ colorIndex: nextStateColor });
   };
   render() {
     return (
@@ -42,9 +30,15 @@ export class ClassTrafficLight extends Component<object, Colors> {
         <h2>Class Traffic Light</h2>
         <div className="traffic-light">
           {/* Background color can be black | yellow | red | green */}
-          <div className={`circle ${this.state.redColor}`}></div>
-          <div className={`circle ${this.state.yellowColor}`}></div>
-          <div className={`circle ${this.state.greenColor}`}></div>
+          {colors.map((item, index) => {
+            return (
+              <div
+                className={`circle ${
+                  index === this.state.colorIndex ? item : "black"
+                }`}
+              ></div>
+            );
+          })}
         </div>
         <button className="next-state-button" onClick={this.changeColor}>
           Next State
